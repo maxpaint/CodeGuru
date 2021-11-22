@@ -1,5 +1,5 @@
 public class Deadlock {
-    private Object process = new Object();
+    private volatile Object process = new Object();
     private boolean stopped = true;
 
     public static void main(String args[]) throws InterruptedException {
@@ -14,7 +14,6 @@ public class Deadlock {
             System.out.println("Stopped...");
         });
         threadA.start();
-        threadA.join();
         threadB.start();
     }
 
@@ -24,11 +23,11 @@ public class Deadlock {
         }
     }
 
-    private synchronized boolean isStopped() {
+    private boolean isStopped() {
         return stopped;
     }
 
-    public synchronized void stopProcess() {
+    public void stopProcess() {
         synchronized (process) {
             System.out.println("Stopping...");
         }
