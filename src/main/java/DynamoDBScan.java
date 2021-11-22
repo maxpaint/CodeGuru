@@ -1,3 +1,4 @@
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.*;
@@ -16,14 +17,15 @@ import java.util.Map;
 public class DynamoDBScan implements RequestHandler<Map<String, String>, String> {
 
     static String tableName = "<FMI1>";
+    static AmazonDynamoDB client = AmazonDynamoDBClientBuilder
+            .standard()
+            .withRegion(Regions.EU_WEST_3)
+            .build();
+    static DynamoDB dynamoDB = new DynamoDB(client);
 
     private static String findAllItems() {
-        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
-        DynamoDB dynamoDB = new DynamoDB(client);
         Table table = dynamoDB.getTable(tableName);
-
         ItemCollection<ScanOutcome> items = table.scan();
-
         Iterator<Item> iterator = items.iterator();
         String itemsToReturn = "";
         while (iterator.hasNext()) {
