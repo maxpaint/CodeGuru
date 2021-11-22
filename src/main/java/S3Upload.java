@@ -33,15 +33,12 @@ public class S3Upload {
     }
 
     private static String readFileContents() {
-        BufferedReader reader = null;
-        String fileContents = "";
-        try {
-            reader = new BufferedReader(new FileReader(
-                    "C:\\<FMI2>"));
-
+        StringBuilder fileContents = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\<FMI2>"));) {
             while (true) {
-                fileContents += reader.readLine();
-                if (fileContents == null || fileContents.equals("")) {
+                String line = reader.readLine();
+                fileContents.append(line);
+                if (line == null || fileContents.toString().equals("")) {
                     break;
                 }
             }
@@ -49,7 +46,7 @@ public class S3Upload {
             System.out.println("Something went wrong");
         }
 
-        return fileContents;
+        return fileContents.toString();
     }
 
 

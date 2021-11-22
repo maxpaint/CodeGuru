@@ -14,6 +14,7 @@ public class Deadlock {
             System.out.println("Stopped...");
         });
         threadA.start();
+        threadA.join();
         threadB.start();
     }
 
